@@ -9,7 +9,7 @@
 		"lint": "next lint"
 	},
 	"prisma": {
-		"seed": "ts-node --compiler-options {\"module\": \"commonJS\"} prisma/seed.ts"
+		"seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
 	},
 	"dependencies": {
 		"@ai-sdk/openai": "^0.0.10",

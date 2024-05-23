@@ -4,10 +4,6 @@ import { SignIn } from './components/sign-in';
 export default function Home() {
 	return (
 		<main>
-			<Chat />
-
-			<hr />
-
 			<SignIn />
 		</main>
 	);
