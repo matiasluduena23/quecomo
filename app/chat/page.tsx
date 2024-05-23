@@ -1,9 +1,16 @@
 import { auth } from '@/auth';
 import Chat from '../components/Chat';
 import Image from 'next/image';
+import prisma from '../lib/db';
 
 export default async function page() {
 	const session = await auth();
+
+	const userData = await prisma.user.findUnique({
+		where: {
+			email: 'matiaslredes@gmail.com',
+		},
+	});
 
 	if (!session) return null;
 
@@ -22,6 +29,7 @@ export default async function page() {
 					)}
 					<p>{session?.user?.name}</p>
 					<p>{session?.user?.email}</p>
+					<p>consultas disponibles: {userData?.consultas}</p>
 				</div>
 
 				<h1 className="text-center text-4xl uppercase">Chat Page</h1>
