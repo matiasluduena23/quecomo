@@ -20,6 +20,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 					email: profile.email,
 					name: userName,
 					consultas: 20,
+					avatar: profile.picture,
 				},
 			});
 			return true;

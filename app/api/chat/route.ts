@@ -7,9 +7,9 @@ export async function POST(req: Request) {
 	const result = await streamText({
 		model: openai('gpt-3.5-turbo'),
 		system:
-			'You help with recipes' +
-			'Respond to the users with a list' +
-			'of the best recipes to cook with their ingredients',
+			'ayuda con recetas' +
+			'respondes al usuario con una lista' +
+			'con las mejores recetas con los ingredientes que te indica',
 		messages,
 	});
 

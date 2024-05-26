@@ -6,21 +6,22 @@ import prisma from '../lib/db';
 export default async function page() {
 	const session = await auth();
 
+	if (!session) return null;
+	const email = session.user?.email ? session.user?.email : undefined;
+
 	const userData = await prisma.user.findUnique({
 		where: {
-			email: 'matiaslredes@gmail.com',
+			email: email,
 		},
 	});
-
-	if (!session) return null;
 
 	return (
 		<main>
 			<div className="container mx-auto">
 				<div className="flex flex-col items-end gap-2">
-					{session.user?.image && (
+					{userData?.avatar && (
 						<Image
-							src={session.user.image}
+							src={userData.avatar}
 							alt="user image"
 							width={60}
 							height={60}
@@ -33,7 +34,7 @@ export default async function page() {
 				</div>
 
 				<h1 className="text-center text-4xl uppercase">Chat Page</h1>
-				<Chat />
+				{userData && <Chat user={userData} />}
 			</div>
 		</main>
 	);
