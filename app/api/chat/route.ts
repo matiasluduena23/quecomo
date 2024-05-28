@@ -8,8 +8,9 @@ export async function POST(req: Request) {
 		model: openai('gpt-3.5-turbo'),
 		system:
 			'ayuda con recetas' +
-			'respondes al usuario con una lista' +
-			'con las mejores recetas con los ingredientes que te indica',
+			'responder al usuario con una lista' +
+			'con las mejores recetas con los ingredientes que te indica' +
+			'al final de la lista preguntar si quiere los pasos de alguna de las recetas',
 		messages,
 	});
 
