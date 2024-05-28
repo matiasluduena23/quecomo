@@ -49,9 +49,7 @@ export default function Chat({ user }: { user: User }) {
 				/>
 			</form>
 
-			{optimisticConsultas.consultas === 0 && (
-				<DialogPay open={open} setOpen={setOpen} />
-			)}
+			{user.consultas === 0 && <DialogPay />}
 		</div>
 	);
 }

@@ -1,6 +1,11 @@
+import { auth } from '@/auth';
 import { SignIn } from './components/sign-in';
+import { redirect } from 'next/navigation';
 
-export default function Home() {
+export default async function Home() {
+	const session = await auth();
+	if (session) redirect('./chat');
+
 	return (
 		<main>
 			<div className="container mx-auto">

@@ -10,15 +10,9 @@ import {
 } from '@/components/ui/dialog';
 import { Dispatch, SetStateAction } from 'react';
 
-export function DialogPay({
-	open,
-	setOpen,
-}: {
-	open?: boolean;
-	setOpen?: Dispatch<SetStateAction<boolean>>;
-}) {
+export function DialogPay() {
 	return (
-		<Dialog open={open} onOpenChange={setOpen}>
+		<Dialog>
 			<DialogTrigger asChild>
 				<Button variant="outline">Comprar consultas</Button>
 			</DialogTrigger>
