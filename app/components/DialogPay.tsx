@@ -1,7 +1,4 @@
 'use client';
-
-import { Button } from '@/components/ui/button';
-import axios from 'axios';
 import {
 	Dialog,
 	DialogContent,
@@ -16,13 +13,17 @@ import {
 	SelectContent,
 	SelectGroup,
 	SelectItem,
-	SelectLabel,
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import axios from 'axios';
+import { uuid } from 'uuidv4';
+
 import { mercadopayment } from '../lib/actions';
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
 import { useEffect, useState } from 'react';
+import { headers } from 'next/headers';
 
 export function DialogPay() {
 	const [preferenceId, setPreferenceId] = useState<null | string>(null);
@@ -34,14 +35,24 @@ export function DialogPay() {
 
 	const createPreference = async () => {
 		try {
-			const response = await axios.post('', {
-				title: 'compra consultas',
-				cantidad: 1,
-				precio: 3000,
-				description:
-					'Dispositivo de tienda móvil de comercio electrónico',
-				imagen: '/public/vercel.svg',
-			});
+			const idempotencyKey = uuid();
+
+			const response = await axios.post(
+				'',
+				{
+					title: 'compra consultas',
+					cantidad: 1,
+					precio: 3000,
+					description:
+						'Dispositivo de tienda móvil de comercio electrónico',
+					imagen: '/public/vercel.svg',
+				},
+				{
+					headers: {
+						'X-Idempotency-Key': idempotencyKey,
+					},
+				}
+			);
 
 			const { id } = response.data;
 			return id;

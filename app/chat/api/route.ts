@@ -1,4 +1,5 @@
 import { MercadoPagoConfig, PaymentMethod, Preference } from 'mercadopago';
+import { headers } from 'next/headers';
 
 // SDK de Mercado Pago
 // Agrega credenciales
@@ -11,7 +12,8 @@ const client = new MercadoPagoConfig({
 
 export async function POST(req: Request) {
 	const { title, cantidad, precio, description, image } = await req.json();
-
+	const headersList = headers();
+	const idempotencyKey = headersList.get('x-idempotency-key')!;
 	try {
 		const body = {
 			items: [
@@ -33,14 +35,18 @@ export async function POST(req: Request) {
 				installments: 6,
 			},
 			back_urls: {
-				success: '',
-				failure: '',
-				pending: '',
+				success: 'https://axios-http.com/es/docs/example',
+				failure: 'https://axios-http.com/es/docs/example',
+				pending: 'https://axios-http.com/es/docs/example',
 			},
 		};
 
 		const preference = new Preference(client);
-		const result = await preference.create({ body });
+		const result = await preference.create({
+			body,
+			requestOptions: { idempotencyKey: idempotencyKey },
+		});
+
 		return Response.json({ id: result.id });
 	} catch (error) {
 		console.log('Error in the server' + error);
