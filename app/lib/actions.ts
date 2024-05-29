@@ -1,7 +1,8 @@
 'use server';
 import { revalidatePath } from 'next/cache';
 import prisma from './db';
-import { MercadoPagoConfig, Preference } from 'mercadopago';
+import { MercadoPagoConfig, PaymentMethod, Preference } from 'mercadopago';
+import image from '@/public/vercel.svg';
 
 export async function updateUser(user: User) {
 	try {
@@ -28,6 +29,9 @@ export async function updateUser(user: User) {
 // Agrega credenciales
 const client = new MercadoPagoConfig({
 	accessToken: process.env.MERCADO_ACCESS_TOKEN!,
+	options: {
+		integratorId: process.env.MERCADO_INTEGRATOR_ID!,
+	},
 });
 
 export async function mercadopayment(formData: FormData) {
@@ -42,10 +46,26 @@ export async function mercadopayment(formData: FormData) {
 					{
 						title: 'compra consultas',
 						quantity: 1,
-						unit_price: cantidad,
-						id: cantidad.toString(),
+						unit_price: 3000,
+						id: '1234',
+						description:
+							'Dispositivo de tienda móvil de comercio electrónico',
+						picture_url: '/public/vercel.svg',
 					},
 				],
+				payment_methods: {
+					excluded_payment_methods: [
+						{
+							id: 'visa',
+						},
+					],
+					installments: 6,
+				},
+				back_urls: {
+					success: '',
+					failure: '',
+					pending: '',
+				},
 			},
 		})
 
