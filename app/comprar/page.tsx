@@ -8,7 +8,6 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { mercadopayment } from '../lib/actions';
 import MercadoPagoConfig, { Preference } from 'mercadopago';
 import { redirect } from 'next/navigation';
 
@@ -43,6 +42,16 @@ export default function page() {
 					],
 					installments: 6,
 				},
+				back_urls: {
+					success:
+						'https://nextjs.org/docs/app/building-your-application/routing/route-handlers',
+					pending:
+						'https://nextjs.org/docs/app/building-your-application/routing/route-handlers',
+					failure:
+						'https://nextjs.org/docs/app/building-your-application/routing/route-handlers',
+				},
+				auto_return: 'approved',
+				external_reference: 'matiaslredes@gmail.com',
 			},
 		});
 
