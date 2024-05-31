@@ -17,55 +17,11 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import axios from 'axios';
-import { uuid } from 'uuidv4';
 
 import { mercadopayment } from '../lib/actions';
-import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
-import { useEffect, useState } from 'react';
-import { headers } from 'next/headers';
+import { useState } from 'react';
 
 export function DialogPay() {
-	const [preferenceId, setPreferenceId] = useState<null | string>(null);
-	useEffect(() => {
-		initMercadoPago(process.env.MERCADO_PUBLIC_KEY!, {
-			locale: 'es-AR',
-		});
-	}, []);
-
-	const createPreference = async () => {
-		try {
-			const idempotencyKey = uuid();
-
-			const response = await axios.post(
-				'',
-				{
-					title: 'compra consultas',
-					cantidad: 1,
-					precio: 3000,
-					description:
-						'Dispositivo de tienda móvil de comercio electrónico',
-					imagen: '/public/vercel.svg',
-				},
-				{
-					headers: {
-						'X-Idempotency-Key': idempotencyKey,
-					},
-				}
-			);
-
-			const { id } = response.data;
-			return id;
-		} catch (error) {
-			console.log('Error ejecutando post' + error);
-		}
-	};
-
-	const handleClick = async () => {
-		const id: string = await createPreference();
-		if (id) setPreferenceId(id);
-	};
-
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
@@ -96,16 +52,8 @@ export function DialogPay() {
 						</SelectContent>
 					</Select>
 
-					<Button type="submit" onClick={handleClick}>
-						Ir a mercadopago
-					</Button>
+					<Button type="submit">Ir a mercadopago</Button>
 				</form>
-				{preferenceId && (
-					<Wallet
-						initialization={{ preferenceId: preferenceId }}
-						customization={{ texts: { valueProp: 'smart_option' } }}
-					/>
-				)}
 
 				<DialogFooter></DialogFooter>
 			</DialogContent>
