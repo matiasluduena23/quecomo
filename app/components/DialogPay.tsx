@@ -20,7 +20,6 @@ import { Button } from '@/components/ui/button';
 
 import { mercadopayment } from '../lib/actions';
 import { useFormState } from 'react-dom';
-import { Span } from 'next/dist/trace';
 
 export function DialogPay() {
 	const [state, dispatch] = useFormState(mercadopayment, { message: null });

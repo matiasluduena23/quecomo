@@ -2,9 +2,10 @@
 import { revalidatePath } from 'next/cache';
 import prisma from './db';
 import { redirect } from 'next/navigation';
-import MercadoPagoConfig, { Preference } from 'mercadopago';
+import { Preference } from 'mercadopago';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
+import { client } from './utils';
 
 export async function updateUser(user: User) {
 	try {
@@ -27,15 +28,26 @@ export async function updateUser(user: User) {
 	}
 }
 
-const client = new MercadoPagoConfig({
-	accessToken: process.env.MERCADO_ACCESS_TOKEN!,
-	options: {
-		integratorId: process.env.MERCADO_INTEGRATOR_ID,
-		idempotencyKey: uuidv4(),
-	},
-});
+export async function addConsultas(email: any, consultas: any) {
+	try {
+		await prisma.user.update({
+			where: {
+				email: email,
+			},
+			data: {
+				consultas: consultas,
+			},
+		});
+	} catch (error) {
+		console.log(
+			'Something went wrong saving your data on database ' + error
+		);
+	} finally {
+		revalidatePath('/chat');
+	}
+}
 
-export type State = {
+type State = {
 	message: string | null;
 };
 
@@ -75,6 +87,7 @@ export async function mercadopayment(
 					'https://nextjs.org/docs/app/building-your-application/routing/route-handlers',
 			},
 			auto_return: 'approved',
+			binary_mode: true,
 		},
 	});
 
