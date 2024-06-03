@@ -19,9 +19,12 @@ import {
 import { Button } from '@/components/ui/button';
 
 import { mercadopayment } from '../lib/actions';
-import { useState } from 'react';
+import { useFormState } from 'react-dom';
+import { Span } from 'next/dist/trace';
 
 export function DialogPay() {
+	const [state, dispatch] = useFormState(mercadopayment, { message: null });
+
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
@@ -32,7 +35,10 @@ export function DialogPay() {
 					<DialogTitle>Comprar consultas</DialogTitle>
 					<DialogDescription>comprar mas consultas</DialogDescription>
 				</DialogHeader>
-				<form action={mercadopayment} className="flex flex-col gap-8">
+				<form
+					action={dispatch}
+					className="flex flex-col gap-8 relative"
+				>
 					<Select name="cantidad" required>
 						<SelectTrigger className="w-full">
 							<SelectValue placeholder="Selecciona una cantidad" />
@@ -51,7 +57,11 @@ export function DialogPay() {
 							</SelectGroup>
 						</SelectContent>
 					</Select>
-
+					{state.message && (
+						<span className="text-sm text-red-400 absolute top-10 left-2">
+							{state.message}
+						</span>
+					)}
 					<Button type="submit">Ir a mercadopago</Button>
 				</form>
 
