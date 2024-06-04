@@ -20,9 +20,12 @@ import { Button } from '@/components/ui/button';
 
 import { mercadopayment } from '../lib/actions';
 import { useFormState } from 'react-dom';
+import { SvgSpinners3DotsBounce } from './Spinner';
+import { useState } from 'react';
 
-export function DialogPay() {
+export function DialogPay({ email }: { email: string }) {
 	const [state, dispatch] = useFormState(mercadopayment, { message: null });
+	const [loading, setLoading] = useState(false);
 
 	return (
 		<Dialog>
@@ -38,6 +41,7 @@ export function DialogPay() {
 					action={dispatch}
 					className="flex flex-col gap-8 relative"
 				>
+					<input type="hidden" name="email" value={email} />
 					<Select name="cantidad" required>
 						<SelectTrigger className="w-full">
 							<SelectValue placeholder="Selecciona una cantidad" />
@@ -61,7 +65,13 @@ export function DialogPay() {
 							{state.message}
 						</span>
 					)}
-					<Button type="submit">Ir a mercadopago</Button>
+					<Button type="submit" onClick={() => setLoading(true)}>
+						{!loading ? (
+							<span>Ir a mercadopago </span>
+						) : (
+							<SvgSpinners3DotsBounce />
+						)}
+					</Button>
 				</form>
 
 				<DialogFooter></DialogFooter>

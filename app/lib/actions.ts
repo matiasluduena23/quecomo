@@ -6,6 +6,7 @@ import { Preference } from 'mercadopago';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 import { client } from './utils';
+import { auth } from '@/auth';
 
 export async function updateUser(user: User) {
 	try {
@@ -28,14 +29,16 @@ export async function updateUser(user: User) {
 	}
 }
 
-export async function addConsultas(email: any, consultas: any) {
+export async function addConsultas(email: string, consultas: number) {
 	try {
 		await prisma.user.update({
 			where: {
 				email: email,
 			},
 			data: {
-				consultas: consultas,
+				consultas: {
+					increment: consultas,
+				},
 			},
 		});
 	} catch (error) {
@@ -57,10 +60,13 @@ export async function mercadopayment(
 ): Promise<State> {
 	const formSchema = z.object({
 		cantidad: z.coerce.number().gt(0),
+		email: z.string().email(),
 	});
 
-	const cantidad = Number(formData.get('cantidad'));
-	const validateField = formSchema.safeParse({ cantidad });
+	const validateField = formSchema.safeParse({
+		cantidad: Number(formData.get('cantidad')),
+		email: formData.get('email'),
+	});
 
 	if (!validateField.success) {
 		return { message: 'Seleccione una opcion' };
@@ -73,8 +79,8 @@ export async function mercadopayment(
 					id: uuidv4(),
 					title: 'consultas',
 					quantity: 1,
-					unit_price: cantidad,
-					description: 'Carga de ' + cantidad + ' consultas',
+					unit_price: validateField.data.cantidad,
+					description: validateField.data.email,
 					currency_id: 'ARS',
 				},
 			],

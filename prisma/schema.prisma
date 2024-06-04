@@ -8,10 +8,19 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
   name      String
   consultas Int
   avatar    String?
-  createAt  DateTime @default(now())
+  createAt  DateTime  @default(now())
+  payments  Payment[]
+}
+
+model Payment {
+  id       String   @id @default(uuid())
+  amount   Int
+  user     User     @relation(fields: [userId], references: [id])
+  userId   Int
+  createAt DateTime @default(now())
 }

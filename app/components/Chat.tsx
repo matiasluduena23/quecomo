@@ -8,7 +8,7 @@ import { DialogPay } from './DialogPay';
 export default function Chat({ user }: { user: User }) {
 	const { isLoading, messages, input, handleInputChange, handleSubmit } =
 		useChat();
-	const [open, setOpen] = useState(true);
+
 	const [optimisticConsultas, addOptimisticConsultas] = useOptimistic(
 		user,
 		(state, consulta: number) => {
@@ -49,7 +49,7 @@ export default function Chat({ user }: { user: User }) {
 				/>
 			</form>
 
-			{user.consultas === 0 && <DialogPay />}
+			{user.consultas === 0 && <DialogPay email={user.email} />}
 		</div>
 	);
 }

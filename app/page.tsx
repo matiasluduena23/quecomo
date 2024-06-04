@@ -1,11 +1,10 @@
 import { auth } from '@/auth';
 import { SignIn } from './components/sign-in';
 import { redirect } from 'next/navigation';
-import { DialogPay } from './components/DialogPay';
 
 export default async function Home() {
 	const session = await auth();
-	// if (session) redirect('./chat');
+	if (session) redirect('./chat');
 
 	return (
 		<main>
@@ -14,7 +13,6 @@ export default async function Home() {
 				<div className="flex items-center justify-center mt-[10rem] ">
 					<SignIn />
 				</div>
-				<DialogPay />
 			</div>
 		</main>
 	);

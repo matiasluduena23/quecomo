@@ -2,6 +2,7 @@ import { auth } from '@/auth';
 import Chat from '../components/Chat';
 import Image from 'next/image';
 import prisma from '../lib/db';
+import { DialogPay } from '../components/DialogPay';
 
 export default async function page() {
 	const session = await auth();
@@ -31,6 +32,7 @@ export default async function page() {
 					<p>{session?.user?.name}</p>
 					<p>{session?.user?.email}</p>
 					<p>consultas disponibles: {userData?.consultas}</p>
+					<DialogPay email={userData?.email!} />
 				</div>
 
 				<h1 className="text-center text-4xl uppercase">Chat Page</h1>
