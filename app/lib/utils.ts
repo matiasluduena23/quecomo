@@ -9,11 +9,11 @@ export const client = new MercadoPagoConfig({
 	},
 });
 
-export function checkHash(xSignature: string, xRequestId: string) {
-	// Obtain Query params related to the request URL
-	const urlParams = new URLSearchParams(window.location.search);
-	const dataID = urlParams.get('data.id');
-
+export function checkHash(
+	xSignature: string,
+	xRequestId: string,
+	dataID: string
+) {
 	// Separating the x-signature into parts
 	const parts = xSignature.split(',');
 
@@ -37,7 +37,7 @@ export function checkHash(xSignature: string, xRequestId: string) {
 	});
 
 	// Obtain the secret key for the user/application from Mercadopago developers site
-	const secret = 'your_secret_key_here';
+	const secret = process.env.MERCADO_SECRET!;
 
 	// Generate the manifest string
 	const manifest = `id:${dataID};request-id:${xRequestId};ts:${ts};`;
@@ -51,9 +51,9 @@ export function checkHash(xSignature: string, xRequestId: string) {
 
 	if (sha === hash) {
 		// HMAC verification passed
-		console.log('HMAC verification passed');
+		return true;
 	} else {
 		// HMAC verification failed
-		console.log('HMAC verification failed');
+		return false;
 	}
 }
