@@ -50,6 +50,21 @@ export async function addConsultas(email: string, consultas: number) {
 	}
 }
 
+export async function addPayment(amout: number, userId: number) {
+	try {
+		await prisma.payment.create({
+			data: {
+				amount: amout,
+				userId: userId,
+			},
+		});
+	} catch (error) {
+		console.log(
+			'Something went wrong saving your data on database ' + error
+		);
+	}
+}
+
 type State = {
 	message: string | null;
 };

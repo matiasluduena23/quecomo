@@ -3,7 +3,8 @@
 import { Payment } from 'mercadopago';
 import { NextRequest } from 'next/server';
 import { checkHash, client } from '../lib/utils';
-import { addConsultas } from '../lib/actions';
+import { addConsultas, addPayment } from '../lib/actions';
+import prisma from '../lib/db';
 
 export async function POST(req: NextRequest) {
 	const url = new URL(req.url);
@@ -40,6 +41,17 @@ export async function POST(req: NextRequest) {
 			default:
 				break;
 		}
+
+		const user = await prisma.user.findUnique({
+			where: {
+				email: email,
+			},
+			select: {
+				id: true,
+			},
+		});
+
+		await addPayment(payment.transaction_amount!, user?.id!);
 	}
 
 	return Response.json({ success: true });
