@@ -26,6 +26,7 @@ import { useState } from 'react';
 export function DialogPay({ email }: { email: string }) {
 	const [state, dispatch] = useFormState(mercadopayment, { message: null });
 	const [loading, setLoading] = useState(false);
+	const [value, SetValue] = useState(false);
 
 	return (
 		<Dialog>
@@ -42,7 +43,10 @@ export function DialogPay({ email }: { email: string }) {
 					className="flex flex-col gap-8 relative"
 				>
 					<input type="hidden" name="email" value={email} />
-					<Select name="cantidad">
+					<Select
+						name="cantidad"
+						onValueChange={() => SetValue(true)}
+					>
 						<SelectTrigger className="w-full">
 							<SelectValue placeholder="Selecciona una cantidad" />
 						</SelectTrigger>
@@ -65,9 +69,11 @@ export function DialogPay({ email }: { email: string }) {
 							{state.message}
 						</span>
 					)}
-					<Button type="submit">
-						{!state.message ||
-						state.message === 'Seleccione una opcion' ? (
+					<Button
+						type="submit"
+						onClick={() => value && setLoading(true)}
+					>
+						{!loading ? (
 							<span>Ir a mercadopago </span>
 						) : (
 							<SvgSpinners3DotsBounce />
