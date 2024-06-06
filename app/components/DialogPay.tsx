@@ -32,7 +32,7 @@ export function DialogPay({ email }: { email: string }) {
 			<DialogTrigger asChild>
 				<Button variant="outline">Comprar consultas</Button>
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-[425px]">
+			<DialogContent className="max-w-[350px] sm:max-w-[425px]">
 				<DialogHeader>
 					<DialogTitle>Comprar consultas</DialogTitle>
 					<DialogDescription>comprar mas consultas</DialogDescription>
@@ -42,7 +42,7 @@ export function DialogPay({ email }: { email: string }) {
 					className="flex flex-col gap-8 relative"
 				>
 					<input type="hidden" name="email" value={email} />
-					<Select name="cantidad" required>
+					<Select name="cantidad">
 						<SelectTrigger className="w-full">
 							<SelectValue placeholder="Selecciona una cantidad" />
 						</SelectTrigger>
@@ -65,8 +65,9 @@ export function DialogPay({ email }: { email: string }) {
 							{state.message}
 						</span>
 					)}
-					<Button type="submit" onClick={() => setLoading(true)}>
-						{!loading ? (
+					<Button type="submit">
+						{!state.message ||
+						state.message === 'Seleccione una opcion' ? (
 							<span>Ir a mercadopago </span>
 						) : (
 							<SvgSpinners3DotsBounce />

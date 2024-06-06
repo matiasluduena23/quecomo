@@ -3,6 +3,7 @@ import Chat from '../components/Chat';
 import Image from 'next/image';
 import prisma from '../lib/db';
 import { DialogPay } from '../components/DialogPay';
+import { UserCardPopOver } from '../components/UserCard';
 
 export default async function page() {
 	const session = await auth();
@@ -18,22 +19,10 @@ export default async function page() {
 
 	return (
 		<main>
-			<div className="container mx-auto">
-				<div className="flex flex-col items-end gap-2">
-					{user?.avatar && (
-						<Image
-							src={user.avatar}
-							alt="user image"
-							width={60}
-							height={60}
-							className="rounded-full w-[80px] h-[80px] "
-						/>
-					)}
-					<p>{user?.name}</p>
-					<p>{email}</p>
-					<p>consultas disponibles: {user?.consultas}</p>
-					<DialogPay email={user?.email!} />
-				</div>
+			<div className="container mx-auto relative">
+				<nav className="flex justify-end py-4">
+					{user && <UserCardPopOver user={user} />}
+				</nav>
 
 				<h1 className="text-center text-4xl uppercase">Chat Page</h1>
 				{user && <Chat user={user} />}
