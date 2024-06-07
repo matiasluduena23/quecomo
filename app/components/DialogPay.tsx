@@ -31,7 +31,7 @@ export function DialogPay({ email }: { email: string }) {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<Button variant="outline">Comprar consultas</Button>
+				<Button variant="default">Comprar consultas</Button>
 			</DialogTrigger>
 			<DialogContent className="max-w-[350px] sm:max-w-[425px]">
 				<DialogHeader>

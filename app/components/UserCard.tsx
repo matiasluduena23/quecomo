@@ -7,6 +7,7 @@ import {
 } from '@/components/ui/popover';
 import { MenuIcon } from 'lucide-react';
 import { DialogPay } from './DialogPay';
+import { SignOut } from './signOut';
 
 export function UserCardPopOver({ user }: { user: User }) {
 	return (
@@ -26,6 +27,7 @@ export function UserCardPopOver({ user }: { user: User }) {
 					<p>{user.email}</p>
 					<p>consultas disponibles: {user?.consultas}</p>
 					<DialogPay email={user?.email!} />
+					<SignOut />
 				</div>
 			</PopoverContent>
 		</Popover>
